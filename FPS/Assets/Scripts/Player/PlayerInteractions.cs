@@ -20,10 +20,11 @@ public class PlayerInteractions : MonoBehaviour
             GameManager.Instance.LoseHealth(20);
 
             GetComponent<CharacterController>().enabled = false;
+
             gameObject.transform.position = startPosition.position;
+
             GetComponent<CharacterController>().enabled = true;
-        }
-    }
+        }    }
 
     private void OnCollisionEnter(Collision collision)
     {
