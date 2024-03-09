@@ -20,17 +20,17 @@ public class PlayerMovement : MonoBehaviour
 
     Vector3 velocity;
 
-
+    // Sprint
     public bool isSprinting;
-
     public float sprintingSpeedMultiplier = 2f;
-
     private float sprintSpeed = 1f;
 
-
+    // Stamina
     public float staminaUseAmount = 5;
-
     private StaminaBar staminaSlider;
+
+    public Animator animator;
+
 
     private void Start()
     {
@@ -49,6 +49,9 @@ public class PlayerMovement : MonoBehaviour
 
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
+
+        animator.SetFloat("VelX", x);
+        animator.SetFloat("VelZ", z);
 
         Vector3 move = transform.right * x + transform.forward * z;
 
