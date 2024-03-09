@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
 
     public int health = 100;
 
+    public int maxHealth = 100;
+
     public static GameManager Instance { get; private set; }
 
     public int gunAmmo = 10;
@@ -41,6 +43,19 @@ public class GameManager : MonoBehaviour
             Debug.Log("Moriste");
 
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+    }
+
+    public void AddHealth(int health)
+    {
+        if (this.health + health >= maxHealth)
+        {
+            this.health = 100;
+        }
+
+        else
+        {
+            this.health += health;
         }
     }
 }
