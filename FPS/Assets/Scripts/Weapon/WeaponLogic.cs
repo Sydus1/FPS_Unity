@@ -27,7 +27,7 @@ public class WeaponLogic : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && Time.timeScale != 0)
         {
             if (Time.time > shotRateTime && GameManager.Instance.gunAmmo > 0)
             {
@@ -42,7 +42,7 @@ public class WeaponLogic : MonoBehaviour
             }
         }
 
-        else if (Input.GetButtonUp("Fire1") && continueShooting)
+        else if (Input.GetButtonUp("Fire1") && continueShooting && Time.timeScale != 0)
         {
             CancelInvoke("Shoot");
         }

@@ -23,6 +23,8 @@ public class AI : MonoBehaviour
 
     public float distanceToFollowPlayer = 10f;
 
+    public int lifes = 3;
+
 
     void Start()
     {
@@ -80,6 +82,16 @@ public class AI : MonoBehaviour
 
     public void GrenadeImpact()
     {
-        Destroy(gameObject);
+        LooseLife(3);
+    }
+
+    public void LooseLife(int lifesToLose)
+    {
+        lifes = lifes - lifesToLose;
+
+        if (lifes <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 }
