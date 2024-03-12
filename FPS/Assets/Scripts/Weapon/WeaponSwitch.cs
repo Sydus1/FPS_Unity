@@ -1,8 +1,9 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponSwitch : MonoBehaviour
+public class WeaponSwitch : MonoBehaviourPunCallbacks
 {
     public GameObject[] weapons;
 
@@ -15,52 +16,55 @@ public class WeaponSwitch : MonoBehaviour
 
     void Update()
     {
-        int previousWeapon = selectedWeapon;
-
-        if (Input.GetAxis("Mouse ScrollWheel") > 0)
+        if (photonView.IsMine)
         {
-            if(selectedWeapon >= weapons.Length - 1)
+            int previousWeapon = selectedWeapon;
+
+            if (Input.GetAxis("Mouse ScrollWheel") > 0)
+            {
+                if (selectedWeapon >= weapons.Length - 1)
+                {
+                    selectedWeapon = 0;
+                }
+                else
+                {
+                    selectedWeapon++;
+                }
+            }
+
+            if (Input.GetAxis("Mouse ScrollWheel") < 0)
+            {
+                if (selectedWeapon <= 0)
+                {
+                    selectedWeapon = weapons.Length - 1;
+                }
+                else
+                {
+                    selectedWeapon--;
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 selectedWeapon = 0;
             }
-            else
+
+            if (Input.GetKeyDown(KeyCode.Alpha2) && weapons.Length >= 2)
             {
-                selectedWeapon++;
+                selectedWeapon = 1;
             }
-        }
 
-        if (Input.GetAxis("Mouse ScrollWheel") < 0)
-        {
-            if (selectedWeapon <= 0)
+            if (Input.GetKeyDown(KeyCode.Alpha3) && weapons.Length >= 2)
             {
-                selectedWeapon = weapons.Length - 1;
+                selectedWeapon = 2;
             }
-            else
+
+
+
+            if (previousWeapon != selectedWeapon)
             {
-                selectedWeapon--;
+                SelectWeapon();
             }
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            selectedWeapon = 0;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha2) && weapons.Length >= 2)
-        {
-            selectedWeapon = 1;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha3) && weapons.Length >= 2)
-        {
-            selectedWeapon = 2;
-        }
-
-
-
-        if (previousWeapon != selectedWeapon)
-        {
-            SelectWeapon();
         }
     }
 

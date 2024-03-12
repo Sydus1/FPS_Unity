@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Photon.Pun;
 
 public class GameManager : MonoBehaviour
 {
@@ -28,6 +29,7 @@ public class GameManager : MonoBehaviour
     {
         ammoText.text = gunAmmo.ToString();
         healthText.text = health.ToString();
+
     }
 
     public void LoseHealth(int healthToReduce)

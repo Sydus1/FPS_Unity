@@ -1,18 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class Launcher : MonoBehaviour
+public class Launcher : MonoBehaviourPunCallbacks
 {
-    // Start is called before the first frame update
+    public PhotonView playerPrefab;
+
+    public Transform spawnPoint;
+
+
     void Start()
     {
-        
+        PhotonNetwork.ConnectUsingSettings();
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void OnConnectedToMaster()
     {
-        
+        Debug.Log("Conectado");
+
+        PhotonNetwork.JoinRandomOrCreateRoom(); // Unirse a una sala o crear una random
+    }
+
+    public override void OnJoinedRoom()
+    {
+        Debug.Log("Conectado a la sala");
+
+        PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint.position, spawnPoint.rotation);
     }
 }

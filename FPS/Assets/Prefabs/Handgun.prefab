@@ -385,6 +385,8 @@ MonoBehaviour:
   bullet: {fileID: 4069475286139740790, guid: 390796b1a88ca3049a366e3bf0e38b24, type: 3}
   shotForce: 1500
   shotRate: 0.5
+  shotSound: {fileID: 8300000, guid: bc3e9bcd4c9e8ac4b8f630a54aeb2d9a, type: 3}
+  continueShooting: 0
 --- !u!1 &8647766491002261225
 GameObject:
   m_ObjectHideFlags: 0

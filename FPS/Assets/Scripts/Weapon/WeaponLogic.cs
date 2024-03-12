@@ -1,8 +1,9 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponLogic : MonoBehaviour
+public class WeaponLogic : MonoBehaviourPunCallbacks
 {
     public Transform spawnPoint;
 
@@ -19,33 +20,80 @@ public class WeaponLogic : MonoBehaviour
 
     public bool continueShooting = false;
 
+    private PhotonView photonView;
+
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        photonView = GetComponent<PhotonView>();
     }
 
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire1") && Time.timeScale != 0)
+        if (photonView.IsMine)
         {
-            if (Time.time > shotRateTime && GameManager.Instance.gunAmmo > 0)
+            if (Input.GetButtonDown("Fire1") && Time.timeScale != 0)
             {
-                if (continueShooting) 
+                if (Time.time > shotRateTime && GameManager.Instance.gunAmmo > 0)
                 {
-                    InvokeRepeating("Shoot", 0.005f, shotRate);
-                }
-                else
-                {
-                    Shoot();
+                    if (continueShooting)
+                    {
+                        InvokeRepeating("ShootRPC", 0.005f, shotRate);
+                    }
+                    else
+                    {
+                        //Shoot();
+                        ShootRPC();
+                    }
                 }
             }
+
+            else if (Input.GetButtonUp("Fire1") && continueShooting && Time.timeScale != 0)
+            {
+                //CancelInvoke("Shoot");
+                CancelInvoke("ShootRPC");
+            }
+        }
+    }
+
+    public void ShootRPC()
+    {
+
+        if (GameManager.Instance.gunAmmo > 0)
+        {
+            if (audioSource != null)
+            {
+                audioSource.PlayOneShot(shotSound);
+            }
+
+            photonView.RPC("ShootMultiplayer", RpcTarget.AllViaServer, spawnPoint.position, spawnPoint.rotation);
+
+            GameManager.Instance.gunAmmo--;
+
+            //GameObject newBullet = Instantiate(bullet, spawnPoint.position, spawnPoint.rotation);
+
+            //newBullet.GetComponent<Rigidbody>().AddForce(spawnPoint.forward * shotForce);
+
+            shotRateTime = Time.time + shotRate;
+
+            //Destroy(newBullet, 5);
         }
 
-        else if (Input.GetButtonUp("Fire1") && continueShooting && Time.timeScale != 0)
+        else
         {
-            CancelInvoke("Shoot");
+            CancelInvoke("ShootRPC");
         }
+    }
+
+    [PunRPC]
+    public void ShootMultiplayer(Vector3 position, Quaternion rotation, PhotonMessageInfo info)
+    {
+        GameObject newBullet = Instantiate(bullet, spawnPoint.position, spawnPoint.rotation);
+
+        newBullet.GetComponent<Rigidbody>().AddForce(spawnPoint.forward * shotForce);
+
+        Destroy(newBullet, 5);
     }
 
     public void Shoot()

@@ -1,8 +1,9 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraSwitch : MonoBehaviour
+public class CameraSwitch : MonoBehaviourPunCallbacks
 {
     public Camera thirdPersonCamera;
 
@@ -31,10 +32,13 @@ public class CameraSwitch : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T)) 
-        { 
-            firstPersonEnabled = !firstPersonEnabled;
-            ChangeCamera();
+        if (photonView.IsMine)
+        {
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                firstPersonEnabled = !firstPersonEnabled;
+                ChangeCamera();
+            }
         }
     }
 

@@ -1,9 +1,10 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviourPunCallbacks
 {
     public CharacterController characterController; 
     
@@ -40,31 +41,34 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        isGrounded = Physics.CheckSphere(groundCheck.position, sphereRadius, groundMask);
-
-        if (isGrounded && velocity.y < 0) 
+        if (photonView.IsMine)
         {
-            velocity.y = -2f;
+            isGrounded = Physics.CheckSphere(groundCheck.position, sphereRadius, groundMask);
+
+            if (isGrounded && velocity.y < 0)
+            {
+                velocity.y = -2f;
+            }
+
+            float x = Input.GetAxis("Horizontal");
+            float z = Input.GetAxis("Vertical");
+
+            animator.SetFloat("VelX", x);
+            animator.SetFloat("VelZ", z);
+            animator.SetBool("isSprinting", isSprinting);
+
+            Vector3 move = transform.right * x + transform.forward * z;
+
+            JumpCheck();
+
+            RunCheck();
+
+            characterController.Move(move * speed * Time.deltaTime);
+
+            velocity.y += gravity * Time.deltaTime;
+
+            characterController.Move(velocity * Time.deltaTime * sprintSpeed);
         }
-
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
-
-        animator.SetFloat("VelX", x);
-        animator.SetFloat("VelZ", z);
-        animator.SetBool("isSprinting", isSprinting);
-
-        Vector3 move = transform.right * x + transform.forward * z;
-
-        JumpCheck();
-
-        RunCheck();
-
-        characterController.Move(move * speed * Time.deltaTime);
-
-        velocity.y += gravity * Time.deltaTime;
-
-        characterController.Move(velocity * Time.deltaTime * sprintSpeed);
     }
 
     public void JumpCheck()
