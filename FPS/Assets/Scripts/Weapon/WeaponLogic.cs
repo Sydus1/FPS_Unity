@@ -95,30 +95,4 @@ public class WeaponLogic : MonoBehaviourPunCallbacks
 
         Destroy(newBullet, 5);
     }
-
-    public void Shoot()
-    {
-        if (GameManager.Instance.gunAmmo > 0)
-        {
-            if (audioSource != null)
-            {
-                audioSource.PlayOneShot(shotSound);
-            }
-
-            GameManager.Instance.gunAmmo--;
-
-            GameObject newBullet = Instantiate(bullet, spawnPoint.position, spawnPoint.rotation);
-
-            newBullet.GetComponent<Rigidbody>().AddForce(spawnPoint.forward * shotForce);
-
-            shotRateTime = Time.time + shotRate;
-
-            Destroy(newBullet, 5);
-        }
-
-        else
-        {
-            CancelInvoke("Shoot");
-        }
-    }
 }

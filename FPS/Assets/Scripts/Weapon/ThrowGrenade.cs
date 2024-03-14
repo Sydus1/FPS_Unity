@@ -1,28 +1,36 @@
 using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class ThrowGrenade : MonoBehaviour
+public class ThrowGrenade : MonoBehaviourPunCallbacks
 {
     public float throwForce = 500f;
-
     public GameObject grenadePrefab;
-
-
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && Time.timeScale != 0)
+        if (photonView.IsMine && Input.GetKeyDown(KeyCode.E) && Time.timeScale != 0)
         {
-            Throw();
+            ThrowRPC();
         }
     }
 
-    public void Throw()
+    void ThrowRPC()
     {
-        GameObject newGrenade = Instantiate(grenadePrefab, transform.position, transform.rotation);
+        // Llama al RPC para lanzar la granada
+        photonView.RPC("ThrowGrenadeRPC", RpcTarget.AllViaServer, transform.position, transform.rotation);
+    }
 
-        newGrenade.GetComponent<Rigidbody>().AddForce(transform.forward * throwForce);
+    [PunRPC]
+    public void ThrowGrenadeRPC(Vector3 position, Quaternion rotation)
+    {
+        // Crea una instancia de la granada en la posición y rotación recibidas
+        GameObject newGrenade = Instantiate(grenadePrefab, position, rotation);
+
+        // Obtén el componente Rigidbody de la granada y aplícale una fuerza hacia adelante para simular el lanzamiento
+        Rigidbody grenadeRigidbody = newGrenade.GetComponent<Rigidbody>();
+        if (grenadeRigidbody != null)
+        {
+            grenadeRigidbody.AddForce(newGrenade.transform.forward * throwForce);
+        }
     }
 }

@@ -1,73 +1,76 @@
 using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Grenade : MonoBehaviour
+public class Grenade : MonoBehaviourPunCallbacks
 {
     public float delay = 3f;
-
     public float radius = 5f;
-
     public float explosionForce = 70f;
-
-    private float countDown;
-
-    private bool exploted = false;
-
-    public GameObject explotionEffect;
-
-    private AudioSource audioSource;
-
+    public GameObject explosionEffect;
     public AudioClip explosionSound;
 
-
+    private bool exploded = false;
+    private AudioSource audioSource;
+    private PhotonView photonView;
 
     void Start()
     {
-        countDown = delay;
         audioSource = GetComponent<AudioSource>();
-    }
+        photonView = GetComponent<PhotonView>();
 
-    void Update()
-    {
-        countDown -= Time.deltaTime;
-
-        if (countDown <= 0 && exploted == false)
+        // Solo el dueño de la granada debería establecer el temporizador
+        if (!photonView.IsMine)
         {
-            Explode();
-            exploted = true;
+            Invoke("Explode", delay);
         }
     }
 
     void Explode()
     {
-        Instantiate(explotionEffect, transform.position, transform.rotation);
+        exploded = true;
 
+        // Instancia el efecto de explosión
+        PhotonNetwork.Instantiate(explosionEffect.name, transform.position, transform.rotation);
+
+        // Encuentra los objetos dentro del radio de la explosión
         Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
 
-        foreach (var rangeObjects in colliders)
+        foreach (Collider collider in colliders)
         {
-            AI ai = rangeObjects.GetComponent<AI>();
+            // Aplica la fuerza de la explosión a los objetos con Rigidbody
+            Rigidbody rb = collider.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.AddExplosionForce(explosionForce, transform.position, radius);
+            }
 
+            // Si hay un script AI, llámalo para que reaccione a la explosión
+            AI ai = collider.GetComponent<AI>();
             if (ai != null)
             {
                 ai.GrenadeImpact();
             }
-
-            Rigidbody rb = rangeObjects.GetComponent<Rigidbody>();
-
-            if (rb != null)
-            {
-                rb.AddExplosionForce(explosionForce * 10, transform.position, radius);
-            }
         }
 
-        audioSource.PlayOneShot(explosionSound);
+        // Reproduce el sonido de la explosión
+        if (audioSource != null && explosionSound != null)
+        {
+            audioSource.PlayOneShot(explosionSound);
+        }
 
-        gameObject.GetComponent<SphereCollider>().enabled = false;
-        //gameObject.GetComponent<MeshRenderer>().enabled = false;
+        // Desactiva el collider para evitar daños adicionales
+        GetComponent<SphereCollider>().enabled = false;
 
-        Destroy(gameObject, delay * 2);
+        // Destruye la granada después de un breve retraso para permitir que se reproduzca el efecto de explosión
+        Destroy(gameObject, 2f);
+    }
+
+    // Si la granada no explota antes de ser destruida (por ejemplo, si se lanzó y luego el jugador se desconectó), evita que se ejecute la explosión
+    void OnDestroy()
+    {
+        if (!exploded)
+        {
+            CancelInvoke("Explode");
+        }
     }
 }

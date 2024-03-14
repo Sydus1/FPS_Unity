@@ -66,6 +66,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2780915527870925126}
   - component: {fileID: 8409819005353003109}
+  - component: {fileID: 9110417418553793044}
   m_Layer: 8
   m_Name: SpawnPoint&Grenade
   m_TagString: Untagged
@@ -103,6 +104,28 @@ MonoBehaviour:
   throwForce: 500
   grenadePrefab: {fileID: 6941891071977498097, guid: cdc4449ea0b03744b893f6532dec47c2,
     type: 3}
+--- !u!114 &9110417418553793044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 411961502340636863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1522504930912306850
 GameObject:
   m_ObjectHideFlags: 0
@@ -113,6 +136,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7203823793983380235}
   - component: {fileID: 2733546859919997547}
+  - component: {fileID: 896253634300780903}
   m_Layer: 8
   m_Name: SpawnPoint&Grenade
   m_TagString: Untagged
@@ -150,6 +174,28 @@ MonoBehaviour:
   throwForce: 500
   grenadePrefab: {fileID: 6941891071977498097, guid: cdc4449ea0b03744b893f6532dec47c2,
     type: 3}
+--- !u!114 &896253634300780903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1522504930912306850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &2248856636758537963
 GameObject:
   m_ObjectHideFlags: 0
@@ -1050,7 +1096,7 @@ MonoBehaviour:
   - {fileID: 1211477162459208467}
   - {fileID: 6732182552449866743}
   - {fileID: 197446166512440122}
-  disableMeshPlayerFirstPerson: 0
+  disableMeshPlayerFirstPerson: 1
   meshPlayer: {fileID: 456892651775795658}
 --- !u!114 &8773234377345785304
 MonoBehaviour:
@@ -2302,6 +2348,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 7298804140885085332}
+    - targetCorrespondingSourceObject: {fileID: 7129336485187894173, guid: 4cfbc4cf891664e41918497c417d30c3,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4352165774331620451}
   m_SourcePrefab: {fileID: 100100000, guid: 4cfbc4cf891664e41918497c417d30c3, type: 3}
 --- !u!1 &557081831385647563 stripped
 GameObject:
@@ -2324,6 +2374,28 @@ MonoBehaviour:
   throwForce: 500
   grenadePrefab: {fileID: 6941891071977498097, guid: cdc4449ea0b03744b893f6532dec47c2,
     type: 3}
+--- !u!114 &4352165774331620451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 557081831385647563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1211477162459208467 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8474458608588482885, guid: 4cfbc4cf891664e41918497c417d30c3,
