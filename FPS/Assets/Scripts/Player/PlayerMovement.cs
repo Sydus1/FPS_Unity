@@ -8,7 +8,8 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 {
     public CharacterController characterController; 
     
-    public float speed = 10f;
+    public float initialSpeed = 5f;
+    public float speed = 5f;
     public float gravity = -9.81f;
 
     public Transform groundCheck;
@@ -22,9 +23,9 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     Vector3 velocity;
 
     // Sprint
-    public bool isSprinting;
+    public bool isSprinting = false;
     public float sprintingSpeedMultiplier = 2f;
-    private float sprintSpeed = 1f;
+    private float sprintSpeed = 10f;
 
     // Stamina
     public float staminaUseAmount = 5;
@@ -91,29 +92,24 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     {
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            isSprinting = !isSprinting;
-
-            if (isSprinting == true)
-            {
-                staminaSlider.UseStamina(staminaUseAmount);
-            }
-
-            else
-            {
-                staminaSlider.UseStamina(0);
-            }
+            sprintSpeed = 10f;
+            isSprinting = true;
+            staminaSlider.UseStamina(staminaUseAmount);
+        }
+        else if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            sprintSpeed = initialSpeed; // Restablecer la velocidad inicial
+            isSprinting = false;
+            staminaSlider.UseStamina(0);
         }
 
-        if (isSprinting == true)
+        if (isSprinting)
         {
-            sprintSpeed = 15;
             speed = sprintSpeed;
         }
-
         else
         {
-            sprintSpeed = 10;
-            speed = sprintSpeed;
+            speed = initialSpeed; // Usar la velocidad inicial si no se está sprintando
         }
     }
 }

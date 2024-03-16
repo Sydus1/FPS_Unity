@@ -1045,7 +1045,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterController: {fileID: 6231482299336751249}
-  speed: 10
+  initialSpeed: 6
+  speed: 6
   gravity: -4
   groundCheck: {fileID: 9148106156837827532}
   sphereRadius: 0.3
